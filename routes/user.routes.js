@@ -3,6 +3,8 @@ const router = express.Router();
 const { body,validationResult } = require('express-validator');
 const userModel = require('../models/usermodel')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require("dotenv").config()
 
 router.get('/register',(req,res)=>{
     res.render('register')
@@ -62,6 +64,17 @@ router.post('/login',
                 message:"username or password is incorrect"
             })
         }
+
+        // jwt
+        const token = jwt.sign({
+            user_id:user._id,
+            username:user.username  
+        },process.env.JWT,
+    )
+
+    res.cookie('token',token)
+    res.send("Logged In")
+        
     }
 )
 
