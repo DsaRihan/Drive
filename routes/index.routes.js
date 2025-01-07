@@ -1,13 +1,23 @@
 const express = require("express")
 const router = express.Router()
 const upload = require("../config/multer.config")
+const fileModel = require("../models/file.model")
+const auth = require("../middleware/auth")
 
-router.get('/home',(req,res)=>{
+router.get('/home',auth,async (req,res)=>{
+    const userfiles = await fileModel.find(
+        {user : req.user._id}
+    );
     res.render('home')
 })
 
-router.post('/upload',upload.single('file'),(req,res)=>{
-    res.send(req.file)
+router.post('/upload',auth,upload.single('file'),async(req,res)=>{
+    const newFile = await fileModel.create({
+        path : req.file.path,
+        originalname : req.file.originalname,
+        user : req.user.userId
+    })
+    res.json(newFile)
 })
 
 
