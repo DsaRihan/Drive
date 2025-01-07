@@ -34,6 +34,18 @@
       </div>
     </form> 
   </div>
+
+  <div class="files mt-3 flex flex-col gap-2">
+    <% userfiles.forEach((file)=>{ %>
+      <div class="p-2 cursor-pointer rounded-md bg-gray-300">
+        <h1><%= file.originalname %> </h1>
+        <a href="/downloads/<%= file.path %>" class="text-blue-500 hover:text-blue-700"
+          download="<%= file.originalname %>"
+          >Download</a>
+      </div>
+    <% }) %>
+
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   <script>
     const pop = document.querySelector('.pop');
